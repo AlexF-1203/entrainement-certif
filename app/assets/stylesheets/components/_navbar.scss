@@ -1,12 +1,93 @@
-.navbar-lewagon {
-  justify-content: space-between;
-  background: white;
+
+body {
+  padding-top: 50px; // Adjust this value based on your navbar height
 }
 
-.navbar-lewagon .navbar-collapse {
-  flex-grow: 0;
+.navbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem 0;
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: rgba(253, 253, 253, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  width: 100%;
 }
 
-.navbar-lewagon .navbar-brand img {
-  width: 40px;
+.navbar-inner {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: space-between; // Changé de center à space-between
+  align-items: center;
+  position: relative; // Ajouté pour le positionnement absolu du logo
+}
+
+.navbar-brand-img {
+  width: 150px; // Increased from 60px
+  height: 80px;
+  margin-top: -15px; // Compensate for larger size
+  margin-bottom: -20px; // Compensate for larger size
+  position: relative;
+  z-index: 1001; // Ensure image stays above other elements
+}
+
+.logo {
+  position: absolute; // Position absolue pour ne pas affecter le flex
+  left: 2rem; // Ajustez selon vos besoins
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+.nav-links {
+  display: flex;
+  gap: 4rem;
+  left: -20px;
+  margin: 0 auto 0 auto; /* Ajoute de l'espace à droite avant les icônes */
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: var(--primary-color);
+  font-weight: 500;
+  font-size: 1rem;
+  position: relative;
+  padding: 0.5rem 0;
+  transition: color 0.3s ease;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 400;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #3f81a8;
+  transition: width 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: #4b98c4;
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+.social-icons {
+  position: relative; // Pour maintenir l'élément au-dessus
+  z-index: 1000;
+}
+
+.social-icons a {
+  color: var(--primary-color);
 }

@@ -1,0 +1,21 @@
+<nav class="navbar">
+  <div class="navbar-inner">
+    <div class="logo">
+      <%= link_to root_path do %>
+        <%= image_tag "apartment-logo.svg", class: "navbar-brand-img", alt: "Logo" %>
+      <% end %>
+    </div>
+    <div class="nav-links">
+      <%= link_to "Home", root_path %>
+      <%= link_to "Locations", locations_path %>
+      <%= link_to "Map", locations_map_path %>
+    </div>
+    <div class="social-icons">
+      <% if current_user %>
+        <%= link_to "Logout", destroy_user_session_path, data: { turbo_method: :delete }, class: "nav-link" %>
+      <% else %>
+        <%= link_to "Login", new_user_session_path, class: "nav-link" %>
+      <% end %>
+    </div>
+  </div>
+</nav>

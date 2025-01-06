@@ -1,2 +1,26 @@
-<h1>Pages#home</h1>
-<p>Find me in app/views/pages/home.html.erb</p>
+
+<div class="banner" style="background-image: linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)), url(<%= asset_path('banner.jpg') %>);">
+  <div class="container">
+    <h1>Book your House <strong>and find</strong> your location<strong>for your best holiday</strong>!</h1>
+    <p>Change your life with the best site of location.</p>
+  </div>
+</div>
+
+<div class="container py-2 ">
+  <h2 class="mb-4 text-center pt-3">Latest Locations</h2>
+  <div class="row g-5">
+    <% @locations.each do |location| %>
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="card h-100">
+          <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="location image">
+          <div class="card-body">
+            <h5 class="card-title"><%= location.title %></h5>
+            <p class="card-text"><%= truncate(location.description, length: 100) %></p>
+            <p class="card-text">€<%= number_with_precision(location.price, precision: 2) %></p>
+            <%= link_to "View details", location_path(location), class: "btn btn-primary" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

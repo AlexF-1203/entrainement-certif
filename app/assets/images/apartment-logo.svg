@@ -1,0 +1,29 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+
+  <!-- Bâtiment stylisé -->
+  <path d="M70 120 L70 70 L130 70 L130 120"
+        stroke="#3f81a8"
+        stroke-width="4"
+        fill="none"/>
+
+  <!-- Toit -->
+  <path d="M60 70 L100 40 L140 70"
+        stroke="#3f81a8"
+        stroke-width="4"
+        fill="none"/>
+
+  <!-- Point de localisation -->
+  <circle cx="100" cy="95" r="12" fill="#4b98c4"/>
+  <circle cx="100" cy="95" r="5" fill="white"/>
+
+    <text x="145" y="90"
+        font-family="Montserrat, sans-serif"
+        font-size="26"
+        fill="#3f81a8"
+        font-weight="700">Book</text>
+  <text x="145" y="120"
+        font-family="Montserrat, sans-serif"
+        font-size="26"
+        fill="#4b98c4"
+        font-weight="700">Your House</text>
+</svg>

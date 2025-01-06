@@ -1,0 +1,45 @@
+<div class="search-overlay">
+  <%= form_with url: locations_map_path, method: :get, class: "d-flex p-3" do %>
+    <%= text_field_tag :address,
+      params[:address],
+      class: "form-control me-2",
+      data: {
+        address_autocomplete_target: "address",
+        controller: "address-autocomplete",
+        address_autocomplete_api_key_value: ENV["MAPBOX_API_KEY"]
+      },
+      placeholder: "Search address..."
+    %>
+    <%= number_field_tag :radius,
+      params[:radius] || 10,
+      class: "form-control me-2",
+      min: 1,
+      max: 50,
+      placeholder: "Radius (km)"
+    %>
+    <%= submit_tag "Search", class: "btn btn-primary" %>
+  <% end %>
+</div>
+
+<div style="width: 100vw; height: 100vh; position: fixed; top: px; left: 0;"
+  data-controller="map"
+  data-map-markers-value="<%= @markers.to_json %>"
+  data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>">
+</div>
+
+<% content_for :style do %>
+  <style>
+    .search-overlay {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1000;
+      width: 80%;
+      max-width: 800px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+  </style>
+<% end %>

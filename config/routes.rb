@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  get 'appointments/index'
+  get 'appointments/show'
+  get 'appointments/new'
+  get 'appointments/edit'
   # get 'locations/index'
   # get 'locations/show'
   # get 'locations/create'
@@ -13,7 +17,9 @@ Rails.application.routes.draw do
 
   # Example resource route within a namespace:
   get 'locations/map', to: 'locations#map', as: :locations_map
-  resources :locations
+  resources :locations do
+    resources :appointments, only: [:new, :create, :index]
+  end
 
   get "up" => "rails/health#show", as: :rails_health_check
   # Defines the root path route ("/")

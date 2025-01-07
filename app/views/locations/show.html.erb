@@ -1,33 +1,162 @@
-<h1 class="display-4 text-center pt-5"><%= @location.title %></h1>
-<div class="container-fluid py-5 px-5">
-  <div class="card mb-3">
-    <div class="row g-0">
-      <div class="col-md-4" style="height: 600px;">
-        <%= image_tag "banner.jpg", class: "img-fluid rounded-start", alt: "Logo", style: "width: 100%; height: 100%; object-fit: cover;" %>
-      </div>
-      <div class="col-md-4">
-        <div class="card-body p-5 d-flex flex-column" style="height: 100%;">
-          <div class="text-center">
-            <h1 class="card-title pt-5"><%= @location.title %></h1>
-            <p class="card-text fs-4 my-4"><%= @location.description %></p>
-            <p class="card-text fs-4">Address: <%= @location.address %></p>
-            <p class="card-text fs-3">Price: <%= @location.price %> € / night</p>
-          </div>
-          <div class="mt-auto text-center">
-            <% if current_user.id == @location.user_id %>
-              <%= link_to "Edit", edit_location_path(@location), class: 'btn btn-primary btn-lg me-3' %>
-            <% end %>
-            <%= link_to "Delete", location_path(@location),
-                data: { turbo_method: :delete, turbo_confirm: "Are you sure?" },
-                class: 'btn btn-danger btn-lg me-3' %>
+<!-- app/views/locations/show.html.erb -->
+<div class="location-detail-page py-5">
+  <!-- Image Container -->
+  <div class="container">
+    <div class="image-container text-center mb-4">
+      <%= image_tag "banner.jpg", class: "main-image" %>
+    </div>
+    <!-- Location Details -->
+    <div class="row g-4">
+      <!-- Left Column - Details -->
+      <div class="col-lg-8">
+        <div class="card shadow-sm border-0 rounded-3 mb-4">
+          <div class="card-body p-4">
+            <h1 class="h2 mb-3"><%= @location.title %></h1>
+            <p class="text-muted mb-4">
+              <i class="fas fa-map-marker-alt me-2"></i>
+              <%= @location.address %>
+            </p>
+            <div class="location-highlights mb-4">
+              <div class="row g-3">
+                <div class="col-6 col-md-3">
+                  <div class="highlight-item text-center p-3 bg-light rounded">
+                    <i class="fas fa-euro-sign fa-2x mb-2"></i>
+                    <p class="mb-0"><strong><%= @location.price %></strong>/night</p>
+                  </div>
+                </div>
+                <div class="col-6 col-md-3">
+                  <div class="highlight-item text-center p-3 bg-light rounded">
+                    <i class="fas fa-map-marked-alt fa-2x mb-2"></i>
+                    <p class="mb-0">Prime Location</p>
+                  </div>
+                </div>
+                <div class="col-6 col-md-3">
+                  <div class="highlight-item text-center p-3 bg-light rounded">
+                    <i class="fas fa-calendar-alt fa-2x mb-2"></i>
+                    <p class="mb-0">Available Now</p>
+                  </div>
+                </div>
+                <div class="col-6 col-md-3">
+                  <div class="highlight-item text-center p-3 bg-light rounded">
+                    <i class="fas fa-home fa-2x mb-2"></i>
+                    <p class="mb-0">Full Property</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="location-description mb-4">
+              <h3 class="h4 mb-3">Description</h3>
+              <p class="card-text"><%= @location.description %></p>
+            </div>
+            <!-- Map -->
+            <div class="map-container rounded overflow-hidden">
+              <div style="height: 400px;"
+                  data-controller="map"
+                  data-map-markers-value="<%= @markers.to_json %>"
+                  data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>">
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      <div class="col-md-4" style="height: 600px;"
-        data-controller="map"
-        data-map-markers-value="<%= @markers.to_json %>"
-        data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>">
+      <!-- Right Column - Action Card -->
+      <div class="col-lg-4">
+        <div class="card shadow-sm border-0 rounded-3 sticky-top" style="top: 2rem;">
+          <div class="card-body p-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <h4 class="card-title mb-0">
+                <span class="fs-3"><%= @location.price %>€</span>
+                <span class="text-muted fs-6">/night</span>
+              </h4>
+              <span class="badge bg-success">Available</span>
+            </div>
+            <% if current_user && current_user.id == @location.user_id %>
+              <div class="d-grid gap-2">
+                <%= link_to edit_location_path(@location), class: 'btn btn-outline-primary btn-lg mb-2' do %>
+                  <i class="fas fa-edit me-2"></i>Edit Location
+                <% end %>
+                <%= link_to location_path(@location),
+                    data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to delete this location?" },
+                    class: 'btn btn-outline-danger btn-lg' do %>
+                  <i class="fas fa-trash-alt me-2"></i>Delete Location
+                <% end %>
+              </div>
+            <% else %>
+              <div class="d-grid">
+                <%= link_to location_appointments_path(@location), class: "btn btn-primary btn-lg" do %>
+                  <i class="fas fa-calendar-check me-2"></i>Book Now
+                <% end %>
+              </div>
+            <% end %>
+            <hr class="my-4">
+            <!-- Host Information -->
+            <div class="host-info">
+              <h5 class="mb-3">About the Host</h5>
+              <div class="d-flex align-items-center">
+                <div class="me-3">
+                  <i class="fas fa-user-circle fa-3x text-muted"></i>
+                </div>
+                <div>
+                  <p class="mb-0 fw-bold">
+                    <%= @location.user.email.split('@').first.capitalize %>
+                  </p>
+                  <p class="text-muted mb-0">
+                    <small>Member since <%= @location.user.created_at.strftime("%B %Y") %></small>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
+<style>
+  .location-detail-page {
+    background-color: #f8f9fa;
+  }
+
+  .image-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+
+  .main-image {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .highlight-item {
+    background-color: #f8f9fa;
+    transition: transform 0.2s ease;
+  }
+
+  .highlight-item:hover {
+    transform: translateY(-5px);
+  }
+
+  .highlight-item i {
+    color: #0d6efd;
+  }
+
+  .map-container {
+    border: 1px solid #dee2e6;
+  }
+
+  .badge {
+    padding: 0.5em 1em;
+  }
+
+  @media (max-width: 768px) {
+    .main-image {
+      width: 90%;
+    }
+  }
+</style>

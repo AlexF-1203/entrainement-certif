@@ -1,10 +1,117 @@
-<%= simple_form_for(location) do |f| %>
-  <%= f.input :title %>
-  <%= f.input :address,
-  input_html: {data: {address_autocomplete_target: "address"}},
-  wrapper_html: {data: {controller: "address-autocomplete", address_autocomplete_api_key_value: ENV["MAPBOX_API_KEY"]}}
-%>
-  <%= f.input :description %>
-  <%= f.input :price %>
-  <%= f.submit %>
+<!-- app/views/locations/new.html.erb -->
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+      <div class="card shadow-sm border-0 rounded-3">
+        <div class="card-body p-4">
+          <div class="text-center mb-4">
+            <h2 class="display-6 fw-bold">
+              <%= location.persisted? ? "Edit Location" : "Add New Location" %>
+            </h2>
+            <p class="text-muted">
+              <%= location.persisted? ? "Update your amazing place" : "Share your amazing place with others" %>
+            </p>
+          </div>
+
+          <%= simple_form_for(@location, html: { class: "location-form" }) do |f| %>
+            <div class="mb-4">
+              <%= f.input :title,
+                         label: "Location Name",
+                         placeholder: "e.g., Cozy Mountain Cabin",
+                         input_html: { class: "form-control form-control-lg" } %>
+            </div>
+
+            <div class="mb-4">
+              <%= f.input :address,
+                         label: "Address",
+                         placeholder: "Enter the full address",
+                         input_html: {
+                           data: {
+                             address_autocomplete_target: "address"
+                           },
+                           class: "form-control form-control-lg"
+                         },
+                         wrapper_html: {
+                           data: {
+                             controller: "address-autocomplete",
+                             address_autocomplete_api_key_value: ENV["MAPBOX_API_KEY"]
+                           }
+                         } %>
+            </div>
+
+            <div class="mb-4">
+              <%= f.input :description,
+                         label: "Description",
+                         placeholder: "Tell us about your place...",
+                         input_html: {
+                           class: "form-control form-control-lg",
+                           rows: 4
+                         } %>
+            </div>
+
+            <div class="mb-4">
+              <%= f.input :price,
+                         label: "Price per night (€)",
+                         placeholder: "Enter price",
+                         input_html: {
+                           class: "form-control form-control-lg",
+                           min: 0
+                         } %>
+            </div>
+
+            <div class="d-grid gap-2">
+              <%= f.button :submit, "Create Location", class: "btn btn-primary btn-lg" %>
+              <%= link_to "Cancel", locations_path, class: "btn btn-outline-secondary btn-lg mt-2" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% content_for :style do %>
+  <style>
+    .location-form .form-control {
+      border: 1px solid #dee2e6;
+      padding: 0.75rem 1rem;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .location-form .form-control:focus {
+      border-color: #86b7fe;
+      box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.1);
+    }
+
+    .location-form label {
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+
+    .btn-primary {
+      background-color: #0d6efd;
+      border: none;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .btn-primary:hover {
+      background-color: #0b5ed7;
+      transform: translateY(-1px);
+    }
+
+    .card {
+      transition: all 0.3s ease-in-out;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+    }
+
+    .mapboxgl-ctrl-geocoder {
+      width: 100% !important;
+      max-width: 100% !important;
+      margin-top: 0.5rem;
+    }
+  </style>
 <% end %>
